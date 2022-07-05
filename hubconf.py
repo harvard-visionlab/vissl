@@ -3,7 +3,8 @@ import torch
 import torchvision
 
 from models import AlexNetRotNet
-from models import AlexnetDeepCluster, VGG16DeepCluster
+from models.alexnet_deepcluster import AlexnetDeepCluster
+from models.vgg16_deepcluster import VGG16DeepCluster
 
 from torchvision.models import resnet50
 
