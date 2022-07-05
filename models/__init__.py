@@ -1,3 +1,3 @@
-from .alexnet_rotnet import AlexNetRotNet
-from .alexnet_deepcluster import AlexnetDeepCluster
-from .vgg16_deepcluster import VGG16DeepCluster
+from .alexnet_rotnet import *
+from .alexnet_deepcluster import *
+from .vgg16_deepcluster import *

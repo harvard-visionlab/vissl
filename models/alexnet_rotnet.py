@@ -5,6 +5,8 @@ import torch.nn.functional as F
 
 from pdb import set_trace
 
+__all__ = ['AlexNetRotNet']
+
 class AlexNetRotNet(nn.Module):
 
     def __init__(self, num_classes=4):

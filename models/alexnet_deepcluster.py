@@ -13,7 +13,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-__all__ = [ 'AlexNet', 'AlexnetDeepCluster']
+__all__ = [ 'AlexnetDeepCluster']
  
 # (number of filters, kernel size, stride, pad)
 CFG = {
