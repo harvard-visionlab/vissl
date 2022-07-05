@@ -2,7 +2,10 @@ import os
 import torch
 import torchvision
 
-from models import AlexNetRotNet 
+from models import (
+  AlexNetRotNet, alexnet_deepcluster, vgg16_deepcluster
+)
+
 from torchvision.models import resnet50
 
 dependencies = ["torch", "torchvision"]
@@ -16,6 +19,10 @@ def _transform(resize=256, crop_size=224, mean=[0.485, 0.456, 0.406], std=[0.229
     ])
     
     return transform
+
+# ======================================================
+#  RotNet Models
+# ======================================================
 
 def alexnet_rotnet_in1k(pretrained=True, **kwargs):
     model = AlexNetRotNet(**kwargs)
@@ -33,6 +40,7 @@ def alexnet_rotnet_in1k(pretrained=True, **kwargs):
       model.load_state_dict(state_dict, strict=True)
       model.hashid = 'af21e82d'
       model.weights_file = os.path.join(torch.hub.get_dir(), "checkpoints", cache_file_name)
+      model.weighs_url = checkpoint_url
 
     transform = _transform(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 
@@ -59,6 +67,7 @@ def resnet50_rotnet_in1k(pretrained=True, **kwargs):
       model.load_state_dict(state_dict, strict=True)
       model.hashid = '5c0b916d'
       model.weights_file = os.path.join(torch.hub.get_dir(), "checkpoints", cache_file_name)
+      model.weighs_url = checkpoint_url
 
     transform = _transform(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 
@@ -85,7 +94,58 @@ def resnet50_rotnet_in22k(pretrained=True, **kwargs):
       model.load_state_dict(state_dict, strict=True)
       model.hashid = '559277fa'
       model.weights_file = os.path.join(torch.hub.get_dir(), "checkpoints", cache_file_name)
+      model.weighs_url = checkpoint_url
 
     transform = _transform(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 
     return model, transform     
+
+# ======================================================
+#  Deep Cluster
+# ======================================================    
+
+def alexnet_deepcluster_in1k(pretrained=True, **kwargs):
+    model = alexnet_deepcluster(**kwargs)
+    if pretrained:
+      checkpoint_url = "https://dl.fbaipublicfiles.com/deepcluster/alexnet/checkpoint.pth.tar"
+      cache_file_name = "alexnet_deepcluster-3db70837.pth"
+
+      checkpoint = torch.hub.load_state_dict_from_url(
+          url=checkpoint_url,
+          map_location="cpu",
+          file_name=cache_file_name,
+          check_hash=True
+      )
+      state_dict = {k.replace(".module",""):v for k,v in checkpoint['state_dict'].items()}
+
+      model.load_state_dict(state_dict, strict=True)
+      model.hashid = '3db70837'
+      model.weights_file = os.path.join(torch.hub.get_dir(), "checkpoints", cache_file_name)
+      model.weighs_url = checkpoint_url
+
+    transform = _transform(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+
+    return model, transform
+
+def vgg16_deepcluster_in1k(pretrained=True, **kwargs):
+    model = vgg16_deepcluster(**kwargs)
+    if pretrained:
+      checkpoint_url = "https://dl.fbaipublicfiles.com/deepcluster/vgg16/checkpoint.pth.tar"
+      cache_file_name = "vgg16_deepcluster-b6b90ac1.pth"
+
+      checkpoint = torch.hub.load_state_dict_from_url(
+          url=checkpoint_url,
+          map_location="cpu",
+          file_name=cache_file_name,
+          check_hash=True
+      )
+      state_dict = {k.replace(".module",""):v for k,v in checkpoint['state_dict'].items()}
+
+      model.load_state_dict(state_dict, strict=True)
+      model.hashid = 'b6b90ac1'
+      model.weights_file = os.path.join(torch.hub.get_dir(), "checkpoints", cache_file_name)
+      model.weighs_url = checkpoint_url
+
+    transform = _transform(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+
+    return model, transform    
