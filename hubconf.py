@@ -39,7 +39,7 @@ def alexnet_rotnet_in1k(pretrained=True, **kwargs):
     return model, transform
 
 def resnet50_rotnet_in1k(pretrained=True, **kwargs):
-    model = resnet50(**kwargs)
+    model = resnet50(num_classes=4, **kwargs)
     if pretrained:
       checkpoint_url = "https://dl.fbaipublicfiles.com/vissl/model_zoo/rotnet_rn50_in1k_ep105_rotnet_8gpu_resnet_17_07_20.46bada9f/model_final_checkpoint_phase125.torch"
       cache_file_name = "resnet50_rotnet_in1k-5c0b916d.pth"
@@ -65,7 +65,7 @@ def resnet50_rotnet_in1k(pretrained=True, **kwargs):
     return model, transform    
 
 def resnet50_rotnet_in22k(pretrained=True, **kwargs):
-    model = resnet50(**kwargs)
+    model = resnet50(num_classes=4, **kwargs)
     if pretrained:
       checkpoint_url = "https://dl.fbaipublicfiles.com/vissl/model_zoo/converted_vissl_rn50_rotnet_in22k_ep105.torch"
       cache_file_name = "resnet50_rotnet_in22k-559277fa.pth"
@@ -81,7 +81,7 @@ def resnet50_rotnet_in22k(pretrained=True, **kwargs):
       head = checkpoint['classy_state_dict']['base_model']['model']['heads']
       head = {k.replace("0.clf.0.","fc."):v for k,v in head.items()}
       state_dict = {**trunk, **head}
-      
+
       model.load_state_dict(state_dict, strict=True)
       model.hashid = '559277fa'
       model.weights_file = os.path.join(torch.hub.get_dir(), "checkpoints", cache_file_name)
