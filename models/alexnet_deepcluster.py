@@ -13,7 +13,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-__all__ = [ 'AlexNet', 'alexnet_deepcluster_sobel']
+__all__ = [ 'AlexNet', 'AlexnetDeepCluster']
  
 # (number of filters, kernel size, stride, pad)
 CFG = {
@@ -95,7 +95,7 @@ def make_layers_features(cfg, input_dim, bn):
     return nn.Sequential(*layers)
 
 
-def alexnet_deepcluster_sobel(sobel=True, bn=True, out=10000):
+def AlexnetDeepCluster(sobel=True, bn=True, out=10000):
     dim = 2 + int(not sobel)
     model = AlexNet(make_layers_features(CFG['2012'], dim, bn=bn), out, sobel)
     return model

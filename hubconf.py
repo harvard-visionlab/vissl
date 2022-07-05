@@ -3,7 +3,7 @@ import torch
 import torchvision
 
 from models import (
-  AlexNetRotNet, alexnet_deepcluster_sobel, vgg16_deepcluster_sobel
+  AlexNetRotNet, AlexnetDeepCluster, VGG16DeepCluster
 )
 
 from torchvision.models import resnet50
@@ -105,7 +105,7 @@ def resnet50_rotnet_in22k(pretrained=True, **kwargs):
 # ======================================================    
 
 def alexnet_deepcluster_in1k(pretrained=True, **kwargs):
-    model = alexnet_deepcluster_sobel(**kwargs)
+    model = AlexnetDeepCluster(**kwargs)
     if pretrained:
       checkpoint_url = "https://dl.fbaipublicfiles.com/deepcluster/alexnet/checkpoint.pth.tar"
       cache_file_name = "alexnet_deepcluster-3db70837.pth"
@@ -128,7 +128,7 @@ def alexnet_deepcluster_in1k(pretrained=True, **kwargs):
     return model, transform
 
 def vgg16_deepcluster_in1k(pretrained=True, **kwargs):
-    model = vgg16_deepcluster_sobel(**kwargs)
+    model = VGG16DeepCluster(**kwargs)
     if pretrained:
       checkpoint_url = "https://dl.fbaipublicfiles.com/deepcluster/vgg16/checkpoint.pth.tar"
       cache_file_name = "vgg16_deepcluster-b6b90ac1.pth"
