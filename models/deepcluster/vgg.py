@@ -12,7 +12,7 @@ import torch.nn as nn
 import math
 from random import random as rd
 
-__all__ = [ 'VGG16DeepCluster']
+__all__ = ['vgg16_deepcluster']
 
 
 class VGG(nn.Module):
@@ -34,10 +34,10 @@ class VGG(nn.Module):
             grayscale.weight.data.fill_(1.0 / 3.0)
             grayscale.bias.data.zero_()
             sobel_filter = nn.Conv2d(1, 2, kernel_size=3, stride=1, padding=1)
-            sobel_filter.weight.data[0,0].copy_(
+            sobel_filter.weight.data[0, 0].copy_(
                 torch.FloatTensor([[1, 0, -1], [2, 0, -2], [1, 0, -1]])
             )
-            sobel_filter.weight.data[1,0].copy_(
+            sobel_filter.weight.data[1, 0].copy_(
                 torch.FloatTensor([[1, 2, 1], [0, 0, 0], [-1, -2, -1]])
             )
             sobel_filter.bias.data.zero_()
@@ -58,9 +58,9 @@ class VGG(nn.Module):
         return x
 
     def _initialize_weights(self):
-        for y,m in enumerate(self.modules()):
+        for y, m in enumerate(self.modules()):
             if isinstance(m, nn.Conv2d):
-                #print(y)
+                # print(y)
                 n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
                 for i in range(m.out_channels):
                     m.weight.data[i].normal_(0, math.sqrt(2. / n))
@@ -77,7 +77,8 @@ class VGG(nn.Module):
 def make_layers(input_dim, batch_norm):
     layers = []
     in_channels = input_dim
-    cfg = [64, 64, 'M', 128, 128, 'M', 256, 256, 256, 'M', 512, 512, 512, 'M', 512, 512, 512, 'M']
+    cfg = [64, 64, 'M', 128, 128, 'M', 256, 256, 256,
+           'M', 512, 512, 512, 'M', 512, 512, 512, 'M']
     for v in cfg:
         if v == 'M':
             layers += [nn.MaxPool2d(kernel_size=2, stride=2)]
@@ -91,7 +92,7 @@ def make_layers(input_dim, batch_norm):
     return nn.Sequential(*layers)
 
 
-def VGG16DeepCluster(sobel=True, bn=True, out=10000):
+def vgg16_deepcluster(sobel=True, bn=True, out=10000):
     dim = 2 + int(not sobel)
     model = VGG(make_layers(dim, bn), out, sobel)
     return model

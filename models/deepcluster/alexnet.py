@@ -13,8 +13,8 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-__all__ = [ 'AlexnetDeepCluster']
- 
+__all__ = ['alexnet_deepcluster']
+
 # (number of filters, kernel size, stride, pad)
 CFG = {
     '2012': [(96, 11, 4, 2), 'M', (256, 5, 1, 2), 'M', (384, 3, 1, 1), (384, 3, 1, 1), (256, 3, 1, 1), 'M']
@@ -26,11 +26,11 @@ class AlexNet(nn.Module):
         super(AlexNet, self).__init__()
         self.features = features
         self.classifier = nn.Sequential(nn.Dropout(0.5),
-                            nn.Linear(256 * 6 * 6, 4096),
-                            nn.ReLU(inplace=True),
-                            nn.Dropout(0.5),
-                            nn.Linear(4096, 4096),
-                            nn.ReLU(inplace=True))
+                                        nn.Linear(256 * 6 * 6, 4096),
+                                        nn.ReLU(inplace=True),
+                                        nn.Dropout(0.5),
+                                        nn.Linear(4096, 4096),
+                                        nn.ReLU(inplace=True))
 
         self.top_layer = nn.Linear(4096, num_classes)
         self._initialize_weights()
@@ -86,7 +86,8 @@ def make_layers_features(cfg, input_dim, bn):
         if v == 'M':
             layers += [nn.MaxPool2d(kernel_size=3, stride=2)]
         else:
-            conv2d = nn.Conv2d(in_channels, v[0], kernel_size=v[1], stride=v[2], padding=v[3])
+            conv2d = nn.Conv2d(
+                in_channels, v[0], kernel_size=v[1], stride=v[2], padding=v[3])
             if bn:
                 layers += [conv2d, nn.BatchNorm2d(v[0]), nn.ReLU(inplace=True)]
             else:
@@ -95,7 +96,7 @@ def make_layers_features(cfg, input_dim, bn):
     return nn.Sequential(*layers)
 
 
-def AlexnetDeepCluster(sobel=True, bn=True, out=10000):
+def alexnet_deepcluster(sobel=True, bn=True, out=10000):
     dim = 2 + int(not sobel)
     model = AlexNet(make_layers_features(CFG['2012'], dim, bn=bn), out, sobel)
     return model
