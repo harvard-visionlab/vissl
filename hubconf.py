@@ -38,7 +38,8 @@ def alexnet_rotnet_in1k(pretrained=True, **kwargs):
             file_name=cache_file_name,
             check_hash=True
         )
-        state_dict = {str.replace(k, 'module.', ''): v for k, v in checkpoint['network'].items()}
+        state_dict = {str.replace(k, 'module.', '')
+                                  : v for k, v in checkpoint['network'].items()}
         model.load_state_dict(state_dict, strict=True)
         model.hashid = 'af21e82d'
         model.weights_file = os.path.join(
@@ -64,7 +65,8 @@ def resnet50_rotnet_in1k(pretrained=True, **kwargs):
             check_hash=True
         )
         trunk = checkpoint['classy_state_dict']['base_model']['model']['trunk']
-        trunk = {k.replace("_feature_blocks.", ""): v for k, v in trunk.items()}
+        trunk = {k.replace("_feature_blocks.", "")
+                           : v for k, v in trunk.items()}
         head = checkpoint['classy_state_dict']['base_model']['model']['heads']
         head = {k.replace("0.clf.0.", "fc."): v for k, v in head.items()}
         state_dict = {**trunk, **head}
@@ -94,7 +96,8 @@ def resnet50_rotnet_in22k(pretrained=True, **kwargs):
             check_hash=True
         )
         trunk = checkpoint['classy_state_dict']['base_model']['model']['trunk']
-        trunk = {k.replace("_feature_blocks.", ""): v for k, v in trunk.items()}
+        trunk = {k.replace("_feature_blocks.", "")
+                           : v for k, v in trunk.items()}
         head = checkpoint['classy_state_dict']['base_model']['model']['heads']
         head = {k.replace("0.clf.0.", "fc."): v for k, v in head.items()}
         state_dict = {**trunk, **head}
@@ -116,7 +119,6 @@ def resnet50_rotnet_in22k(pretrained=True, **kwargs):
 
 
 def alexnet_deepcluster_in1k(pretrained=True, **kwargs):
-    set_trace()
     model = models.alexnet_deepcluster(**kwargs)
     if pretrained:
         checkpoint_url = "https://dl.fbaipublicfiles.com/deepcluster/alexnet/checkpoint.pth.tar"
