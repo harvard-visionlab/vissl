@@ -12,7 +12,7 @@ import torch.nn as nn
 import math
 from random import random as rd
 
-__all__ = [ 'VGG', 'vgg16']
+__all__ = [ 'VGG', 'vgg16_deepcluster_sobel']
 
 
 class VGG(nn.Module):
