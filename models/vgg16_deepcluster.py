@@ -91,7 +91,7 @@ def make_layers(input_dim, batch_norm):
     return nn.Sequential(*layers)
 
 
-def vgg16_deepcluster(sobel=True, bn=True, out=10000):
+def vgg16_deepcluster_sobel(sobel=True, bn=True, out=10000):
     dim = 2 + int(not sobel)
     model = VGG(make_layers(dim, bn), out, sobel)
     return model
