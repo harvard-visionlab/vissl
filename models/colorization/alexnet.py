@@ -167,7 +167,7 @@ class AlexNetColorization(nn.Module):
         out_feats = get_trunk_forward_outputs_module_list(
             feat, out_feat_keys, self._feature_blocks, self.all_feat_names
         )
-        return out_feats
+        return out_feats[0] if out_feat_keys is None else out_feats
 
 
 class ImgPil2LabTensor(object):
