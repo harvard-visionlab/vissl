@@ -38,8 +38,7 @@ def alexnet_rotnet_in1k(pretrained=True, **kwargs):
             file_name=cache_file_name,
             check_hash=True
         )
-        state_dict = {str.replace(k, 'module.', '')
-                                  : v for k, v in checkpoint['network'].items()}
+        state_dict = {str.replace(k, 'module.', '')                      : v for k, v in checkpoint['network'].items()}
         model.load_state_dict(state_dict, strict=True)
         model.hashid = 'af21e82d'
         model.weights_file = os.path.join(
@@ -65,8 +64,7 @@ def resnet50_rotnet_in1k(pretrained=True, **kwargs):
             check_hash=True
         )
         trunk = checkpoint['classy_state_dict']['base_model']['model']['trunk']
-        trunk = {k.replace("_feature_blocks.", "")
-                           : v for k, v in trunk.items()}
+        trunk = {k.replace("_feature_blocks.", "")                 : v for k, v in trunk.items()}
         head = checkpoint['classy_state_dict']['base_model']['model']['heads']
         head = {k.replace("0.clf.0.", "fc."): v for k, v in head.items()}
         state_dict = {**trunk, **head}
@@ -96,8 +94,7 @@ def resnet50_rotnet_in22k(pretrained=True, **kwargs):
             check_hash=True
         )
         trunk = checkpoint['classy_state_dict']['base_model']['model']['trunk']
-        trunk = {k.replace("_feature_blocks.", "")
-                           : v for k, v in trunk.items()}
+        trunk = {k.replace("_feature_blocks.", "")                 : v for k, v in trunk.items()}
         head = checkpoint['classy_state_dict']['base_model']['model']['heads']
         head = {k.replace("0.clf.0.", "fc."): v for k, v in head.items()}
         state_dict = {**trunk, **head}
@@ -168,5 +165,75 @@ def vgg16_deepcluster_in1k(pretrained=True, **kwargs):
 
     transform = _transform(mean=[0.485, 0.456, 0.406], std=[
                            0.229, 0.224, 0.225])
+
+    return model, transform
+
+# ======================================================
+#  Colorization
+# ======================================================
+
+
+def alexnet_colorization_in1k(pretrained=True, **kwargs):
+    model, transform = models.alexnet_colorization(**kwargs)
+    if pretrained:
+        checkpoint_url = "https://dl.fbaipublicfiles.com/vissl/model_zoo/converted_alexnet_colorization_in1k_pretext.torch"
+        cache_file_name = "alexnet_colorization_in1k-8e2a0649.pth"
+
+        checkpoint = torch.hub.load_state_dict_from_url(
+            url=checkpoint_url,
+            map_location="cpu",
+            file_name=cache_file_name,
+            check_hash=True
+        )
+        state_dict = checkpoint['model_state_dict']
+        model.load_state_dict(state_dict, strict=True)
+        model.hashid = '8e2a0649'
+        model.weights_file = os.path.join(
+            torch.hub.get_dir(), "checkpoints", cache_file_name)
+        model.weighs_url = checkpoint_url
+
+    return model, transform
+
+
+def alexnet_colorization_in22k(pretrained=True, **kwargs):
+    model, transform = models.alexnet_colorization(**kwargs)
+    if pretrained:
+        checkpoint_url = "https://dl.fbaipublicfiles.com/vissl/model_zoo/converted_alexnet_colorization_in22k_pretext.torch"
+        cache_file_name = "alexnet_colorization_in22k-7e305676.pth"
+
+        checkpoint = torch.hub.load_state_dict_from_url(
+            url=checkpoint_url,
+            map_location="cpu",
+            file_name=cache_file_name,
+            check_hash=True
+        )
+        state_dict = checkpoint['model_state_dict']
+        model.load_state_dict(state_dict, strict=True)
+        model.hashid = '7e305676'
+        model.weights_file = os.path.join(
+            torch.hub.get_dir(), "checkpoints", cache_file_name)
+        model.weighs_url = checkpoint_url
+
+    return model, transform
+
+
+def alexnet_colorization_yfcc100m(pretrained=True, **kwargs):
+    model, transform = models.alexnet_colorization(**kwargs)
+    if pretrained:
+        checkpoint_url = "https://dl.fbaipublicfiles.com/vissl/model_zoo/converted_alexnet_colorization_yfcc100m_pretext.torch"
+        cache_file_name = "alexnet_colorization_yfcc100m-00eecc45.pth"
+
+        checkpoint = torch.hub.load_state_dict_from_url(
+            url=checkpoint_url,
+            map_location="cpu",
+            file_name=cache_file_name,
+            check_hash=True
+        )
+        state_dict = checkpoint['model_state_dict']
+        model.load_state_dict(state_dict, strict=True)
+        model.hashid = '00eecc45'
+        model.weights_file = os.path.join(
+            torch.hub.get_dir(), "checkpoints", cache_file_name)
+        model.weighs_url = checkpoint_url
 
     return model, transform

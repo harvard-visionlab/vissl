@@ -11,3 +11,7 @@ So I made this little interface that let's me load their pre-trained models usin
 
   model, transform = torch.hub.load("harvard-visionlab/vissl", "alexnet_rotnet_in1k")
 ```
+
+## jigsaw
+
+-   [ ] resnet50_jigsaw_100perm_in1k
